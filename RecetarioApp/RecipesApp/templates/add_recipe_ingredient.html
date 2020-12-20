@@ -1,0 +1,106 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block content %}
+
+<h1> {{ recipe.name }}</h1>
+<hr>
+<h3> Agregar Ingredientes </h3>
+
+<!------------------------------------------ SHOW INGREDIENTS ----------------------------------->
+{% if recipe_ingredients %}
+<div class="home-container">
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="table-primary" scope="col">Ingrediente</th>
+          <th class="table-primary" scope="col">Cantidad</th>
+          <th class="table-primary" scope="col">Medida</th>
+          <th class="table-primary" scope="col">Editar</th>
+          <th class="table-primary" scope="col">Eliminar</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for ingredient in recipe_ingredients %}
+          <tr>
+            <td class="table-light">{{ ingredient.ingredient.name }} </td>
+            <td class="table-light">${{ ingredient.qty }}</td>
+            <td class="table-light">{{ ingredient.measurement }}</td>
+            
+            <!--EDIT-->
+            <td class="table-light">
+              <a href="{% url 'edit_recipe_ingredient' recipe_id=recipe.id ingredient_id=ingredient.ingredient.id %}" class="btn btn-secondary" role="button"><i class="fas fa-edit"></i></a>
+            </td>
+            <!--DELETE-->
+            <td class="table-light">
+              <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#deleteModal-{{ ingredient.ingredient.id }}"><i class="fas fa-trash-alt"></i></button>
+            </td>
+  
+            <!-- Modal -->
+              <div class="modal fade" id="deleteModal-{{ ingredient.ingredient.id }}" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                      <div class="modal-content">
+                      <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">Estás seguro?</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
+                      </div>
+                      <div class="modal-body">
+                          Estás seguro de que deseas eliminar el ingrediente de esta receta?
+                      </div>
+                      <div class="modal-footer">
+                          <form method="POST" action="{% url 'delete_recipe_ingredient' recipe_id=recipe.id ingredient_id=ingredient.ingredient.id %}">
+                              {% csrf_token %}
+                              <button type="submit" class="btn btn-secondary">Sí, eliminar</button>
+                          </form>
+                          
+                          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">No</button>
+                      </div>
+                      </div>
+                  </div>
+              </div>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endif %}
+
+<!------------------------------------------ ADD INGREDIENTS ----------------------------------->
+<div class="form-container">
+    <form method="POST" action="">
+        {% csrf_token %}
+        <fieldset>
+    
+          <div class="form-group">
+            <label for="ingredient">Ingrediente</label>
+              <select class="form-control" id="ingredient" name="ingredient">
+                    {% for ingredient in all_ingredients %}
+                      {% if ingredient.name not in recipe_ingredients_names %}
+                        <option value="{{ ingredient.name }}">{{ ingredient.name }}</option>
+                      {%endif%}
+                    {%endfor%}
+               </select>
+          </div>
+    
+          <div class="form-group">
+            <label for="qty">Cantidad</label>
+            <input type="number" step="any" class="form-control" id="qty" name="qty" placeholder="Por ejemplo: 500" required>
+          </div>
+    
+          <div class="form-group">
+            <label for="measurement">Medida</label>
+            <select class="form-control" id="measurement" name="measurement">
+                {% for measurement in measurements %}
+                    <option value="{{ measurement.measurement }}">{{ measurement.measurement }}</option>
+                {%endfor%}
+            </select>
+          </div>
+    
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary" >Agregar</button>
+        </div>
+        </fieldset>
+      </form>
+</div>
+
+{% endblock %}

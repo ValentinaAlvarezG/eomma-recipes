@@ -1,0 +1,40 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block content %}
+
+<h1> Editar ingredientes de {{ recipe_ingredient.recipe.name }}</h1>
+<hr>
+
+<h3>{{ recipe_ingredient.ingredient.name }}</h3>
+
+<div class="form-container">
+    <form method="POST" action="">
+        {% csrf_token %}
+        <fieldset>
+    
+    
+          <div class="form-group">
+            <label for="qty">Cantidad</label>
+            <input type="number" step="any" class="form-control" id="qty" name="qty" value="{{ recipe_ingredient.qty }}" required>
+          </div>
+    
+          <div class="form-group">
+            <label for="measurement">Medida</label>
+            <select class="form-control" id="measurement" name="measurement">
+                <option value="{{ recipe_ingredient.measurement }}" selected>{{ recipe_ingredient.measurement }}</option>
+                {% for measurement in measurements %}
+                    {% if measurement.measurement != recipe_ingredient.measurement %}
+                        <option value="{{ measurement.measurement }}">{{ measurement.measurement }}</option>
+                    {% endif %}
+                {%endfor%}
+            </select>
+          </div>
+    
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary" >Guardar cambios</button>
+        </div>
+        </fieldset>
+      </form>
+    </div>
+{% endblock %}

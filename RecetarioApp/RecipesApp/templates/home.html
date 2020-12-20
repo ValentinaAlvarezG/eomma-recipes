@@ -1,0 +1,62 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+
+<h1> Bienvenido {{ user.username }}! </h1>
+
+<hr>
+
+<h4>Si es tu primera vez aquí, <strong>ingresa primero algunos ingredientes</strong> antes de comenzar a crear tus recetas.</h4>
+
+<div class="home-container">
+    <div class="row">
+
+        <div class="col-lg-6">
+            <div class="card mx-auto" style="width: 18rem;">
+                <img class="card-img-top" src="{% static "ingredients.jpg" %}" alt="Ingredients">
+                <div class="card-body">
+                  <h5 class="card-title">Ingredientes</h5>
+                  <p class="card-text">Podrás ingresar tus ingredientes y sus precios para luego usarlos en tus recetas. Este paso es muy importante!</p>
+                  <a href="{% url 'add_ingredient' %}" class="btn btn-primary">Agregar ingrediente</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card  mx-auto" style="width: 18rem;">
+                <img class="card-img-top" src="{% static "recipe.jpg" %}" alt="Recipes">
+                <div class="card-body">
+                  <h5 class="card-title">Recetas</h5>
+                  <p class="card-text">Podrás guardar tus recetas favoritas y calcular su costo de acuerdo a los precios que nos indicas al ingresar los ingredientes.</p>
+                  <a href="{% url 'add_recipe' %}" class="btn btn-primary">Agregar receta</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% else %}
+
+<div class="container">
+    <div class="jumbotron">
+        <span><img class="bd-placeholder-img rounded-circle" src="{% static "corgi.jpeg" %}" alt="My image" width="150" height="100" ></span><h1 class="display-3">Bienvenido a Eomma!</h1>
+        <hr class="my-4">
+        <p class="lead">Aquí podrás llevar un registro de todas tus recetas y calcular su costo en base a los precios de ingredientes que tú nos indiques. </p>
+        
+
+  
+            <p class="lead">Inicia sesión para comenzar tus aventuras en la cocina!</p>
+            <p class="lead"></p>
+                <a class="btn btn-primary btn-lg" href="{% url 'login' %}" role="button">Iniciar sesión</a>
+            </p>
+    </div>
+</div>
+
+{% endif %}
+    
+
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block content %}
+
+<h1> Mis ingredientes </h1>
+
+{% if user_ingredients %}
+
+<div class="home-container">
+  <table class="table">
+    <thead>
+      <tr>
+        <th class="table-primary" scope="col">Ingrediente</th>
+        <th class="table-primary" scope="col">Precio por Unidad</th>
+        <th class="table-primary" scope="col">Unidad</th>
+        <th class="table-primary" scope="col">Editar</th>
+        <th class="table-primary" scope="col">Eliminar</th>
+        
+      </tr>
+    </thead>
+    <tbody>
+      {% for ingredient in user_ingredients %}
+        <tr>
+          <td class="table-light">{{ ingredient.name }} </td>
+          <td class="table-light">${{ ingredient.price_per_unit }}</td>
+          <td class="table-light">{{ ingredient.measurement_unit.label }}</td>
+          <!--EDIT-->
+          <td class="table-light">
+            <a href="{% url 'edit_ingredient' ingredient_id=ingredient.id %}" class="btn btn-secondary" role="button"><i class="fas fa-edit"></i></a>
+          </td>
+          <!--DELETE-->
+          <td class="table-light">
+            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#deleteModal-{{ ingredient.id }}"><i class="fas fa-trash-alt"></i></button>
+          </td>
+
+          <!-- Modal -->
+            <div class="modal fade" id="deleteModal-{{ ingredient.id }}" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Estás seguro?</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
+                    </div>
+                    <div class="modal-body">
+                        Estás seguro de que deseas eliminar el ingrediente?
+                    </div>
+                    <div class="modal-footer">
+                        <form method="POST" action="{% url 'delete_ingredient' ingredient_id=ingredient.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-secondary">Sí, eliminar</button>
+                        </form>
+                        
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">No</button>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% else %}
+
+<hr>
+<h3>Aún no tienes ningún ingrediente!</h3>
+
+{% endif %}
+
+<p class="lead"></p>
+    <a class="btn btn-primary btn-lg" href="{% url 'add_ingredient' %}" role="button">Agregar Ingrediente</a>
+</p>
+
+  
+
+
+{% endblock %}
+
+
+

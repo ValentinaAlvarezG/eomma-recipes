@@ -1,0 +1,39 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block content %}
+
+<h1> Agregar ingrediente</h1>
+
+<div class="form-container">
+<form method="POST" action="">
+    {% csrf_token %}
+    <fieldset>
+
+      <div class="form-group">
+        <label for="name">Nombre del Ingrediente</label>
+        <input type="text" class="form-control" id="name" name="name" placeholder="Por ejemplo: Harina Integral" required> 
+      </div>
+
+      <div class="form-group">
+        <label for="price">Precio por Unidad de Medida</label>
+        <input type="number" step="any" class="form-control" id="price" name="price" placeholder="Por ejemplo: 2500" required>
+      </div>
+
+      <div class="form-group">
+        <label for="unit">Unidad de Medida</label>
+        <select class="form-control" id="unit" name="unit">
+            {% for unit in units %}
+                <option value="{{ unit.label }}">{{ unit.label }}</option>
+            {%endfor%}
+        </select>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary" >Agregar</button>
+    </div>
+    </fieldset>
+  </form>
+</div>
+
+{% endblock %}

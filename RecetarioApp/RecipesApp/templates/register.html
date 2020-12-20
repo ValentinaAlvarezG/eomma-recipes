@@ -1,0 +1,37 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container">
+
+    <h1>Regístrate</h1>
+
+    <form method="POST" action="">
+        {% csrf_token %}
+            <fieldset class="form-container">
+                {% for field in form %}
+                    {% if field.errors %}
+                        <div class="control-group error">
+                            <label class="control-label">{{ field.label }}</label> 
+                            <div class="controls">{{ field }}
+                                {% for error in field.errors %}
+                                  <p class="help-inline"><small>{{ error }}</small></p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="control-group">
+                            <label class="control-label">{{ field.label }}</label> 
+                            <div class="controls">{{ field }}</div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </fieldset>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary" >Registrar</button>
+            </div>
+    </form>
+</div>
+
+{% endblock %}

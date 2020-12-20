@@ -1,0 +1,46 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block content %}
+
+<h1> Mis recetas </h1>
+<hr>
+
+<div class="home-container">
+
+    <p class="lead"></p>
+        <a class="btn btn-primary btn-lg" href="{% url 'add_recipe' %}" role="button">Agregar Receta</a>
+    </p>
+
+    {% if user_recipes %}
+
+        <div class="row">
+            {% for key, value in recipes_ingredients.items %}
+                <div class="col-lg-4">
+
+                    <div class="card mx-auto mt-4" style="width: 90%;">
+                        <img class="card-img-top" src="{% static "recipe.jpg" %}" alt="Recipes">
+                        <div class="card-body">
+                            <h4 class="card-title">{{ key }}</h4>
+                            <p class="card-text">Porciones: {{  value.object.portions }}</p>
+                            <hr>
+                            <h5 class="card-title">Precio</h5>
+                            <p class="card-text">${{ value.price }}</p>
+                                <a href="{% url 'show_recipe' recipe_id=value.object.id %}" class="btn btn-secondary" role="button">Ir a la receta</a>
+                            </p>                                                       
+                        </div>
+                    </div>
+
+                </div>
+            {% endfor %}
+        </div>
+
+    {% else %}
+
+        <h3>Aún no tienes ninguna receta!</h3>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
